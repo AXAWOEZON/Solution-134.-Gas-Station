@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    // Method to find the starting gas station from which a full circle can be completed
+    // Метод для нахождения начальной заправочной станции, с которой можно совершить полный круг
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        ios::sync_with_stdio(false), cin.tie(0), cout.tie(0);
+        int n = gas.size();
+
+        int start_index = 0; // Index of the potential starting gas station
+        int total_gas = 0; // Total available gas
+        int curr_index = 0; // Current index while traversing the gas stations
+
+        // Iterate through all gas stations
+        // Итерация по всем заправочным станциям
+        for (int i = 0; i < n; i++) {
+            total_gas += gas[i] - cost[i]; // Update total available gas
+            curr_index += gas[i] - cost[i]; // Update current index
+
+            // If the current index becomes negative, reset to the next station
+            // Если текущий индекс становится отрицательным, сбросить на следующую станцию
+            if (curr_index < 0) {
+                start_index = i + 1;
+                curr_index = 0;
+            }
+        }
+
+        // If total available gas is negative, return -1 (impossible to complete the circle)
+        // Если общее доступное топливо отрицательное, вернуть -1 (невозможно завершить круг)
+        if (total_gas < 0) {
+            return -1;
+        }
+
+        return start_index; // Return the starting index
+    }
+};
+
+int main()
+{
+    Solution s;
+
+    vector<int> gas = { 1,2,3,4,5 };
+    vector<int> cost = { 3,4,5,1,2 };
+
+    // Print the result of the canCompleteCircuit method
+    // Вывести результат метода canCompleteCircuit
+    cout << s.canCompleteCircuit(gas, cost);
+
+    return 0;
+}
